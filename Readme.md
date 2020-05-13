@@ -1,4 +1,4 @@
-#Portal - Studio automation framework
+#Mobile
 
 **Requeriments**
 
@@ -21,13 +21,11 @@ Open gradle.properties and fill the required variables
 To execute feature files run following cmd command:
 > gradle runFeatures
 
-Run with parameters
-> gradle runFeatures -Purl=https://portal.socialive.us/
 
 Run by tag, add tag to the args in the build.gradle file
 > '--tags', '@Login_001'
 
-> gradle runFeatures -Ptags="@Login_001" 
+> gradle runFeatures -Ptags="@Mobile_001" 
 
 **Generate Allure Report**
 
