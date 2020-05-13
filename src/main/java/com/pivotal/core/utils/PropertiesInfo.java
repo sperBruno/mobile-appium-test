@@ -1,4 +1,4 @@
-package com.pivotal.utils;
+package com.pivotal.core.utils;
 
 import org.apache.log4j.Logger;
 

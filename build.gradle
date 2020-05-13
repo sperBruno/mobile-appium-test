@@ -63,10 +63,6 @@ task runFeatures() {
                 ]
                 jvmArgs = ["-Dcucumber.options=" + cucumberOptions]
                 jvmArgs = ["-Dcucumber.filter.tags=" + tags]
-                jvmArgs = ["-DurlApi=" + urlApi]
-                jvmArgs = ["-Demail=" + email]
-                jvmArgs = ["-Dpassword=" + password]
-                jvmArgs = ["-DapiToken=" + apiToken]
                 jvmArgs = ["-Dbrowser=" + browser]
             }
         } catch (Exception e) {

@@ -1,12 +1,13 @@
 package com.pivotal.core.appium;
 
-import com.pivotal.utils.PropertiesInfo;
+import com.pivotal.core.utils.PropertiesInfo;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -18,6 +19,7 @@ public class MobileManager {
     private static final String UIAUTOMATOR_2 = "uiautomator2";
     private static MobileManager instance = null;
     private AndroidDriver<AndroidElement> driver = null;
+    private WebDriverWait wait = null;
 
     private MobileManager() {
         initAndroidDriver();
@@ -38,6 +40,7 @@ public class MobileManager {
         LOGGER.info(capabilities.getCapabilityNames());
         try {
             driver = new AndroidDriver<>(new URL(PropertiesInfo.getInstance().getAppiumServer()), capabilities);
+            wait = new WebDriverWait(driver, 30);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -46,6 +49,10 @@ public class MobileManager {
 
     public AndroidDriver<AndroidElement> getDriver() {
         return driver;
+    }
+
+    public WebDriverWait getWait(){
+        return wait;
     }
 
     public static MobileManager getInstance() {
