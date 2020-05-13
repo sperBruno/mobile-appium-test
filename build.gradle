@@ -1,0 +1,76 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url 'http://repo.bodar.com'
+        }
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.5"
+    }
+}
+plugins {
+    id "io.qameta.allure" version "2.8.1"
+}
+repositories {
+    jcenter()
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'io.qameta.allure'
+
+
+dependencies {
+    compile group: 'io.appium', name: 'java-client', version: '7.3.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
+
+    testCompile group: 'io.cucumber', name: 'cucumber-java', version: '5.5.0'
+    testCompile group: 'io.cucumber', name: 'cucumber-junit', version: '5.5.0'
+    testCompile group: 'io.cucumber', name: 'cucumber-picocontainer', version: '5.5.0'
+
+    testCompile group: 'io.qameta.allure', name: 'allure-cucumber5-jvm', version: '2.13.2'
+}
+//after dependencies
+allure {
+    version = '2.11.0'
+    resultsDir = file("${rootProject.rootDir}/build/allure-results")
+    reportDir = file("${rootProject.rootDir}/build/allure-report")
+}
+configurations {
+    cucumberRuntime {
+        extendsFrom testRuntime
+    }
+}
+
+task runFeatures() {
+    dependsOn assemble, compileTestJava
+    doLast {
+
+        try {
+            javaexec {
+
+                main = "cucumber.api.cli.Main"
+                classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+                args = ['--plugin', 'pretty',
+                        '--plugin', 'html:report/cucumber-html-report',
+                        '--plugin', 'junit:report/cucumber.xml',
+                        '--plugin', 'json:report/cucumber.json',
+                        '--plugin', 'io.qameta.allure.cucumber5jvm.AllureCucumber5Jvm',
+                        '--plugin', 'rerun:report/rerun.txt',
+                        '--glue', 'com.pivotal', 'src/test/resources/features',
+                ]
+                jvmArgs = ["-Dcucumber.options=" + cucumberOptions]
+                jvmArgs = ["-Dcucumber.filter.tags=" + tags]
+                jvmArgs = ["-DurlApi=" + urlApi]
+                jvmArgs = ["-Demail=" + email]
+                jvmArgs = ["-Dpassword=" + password]
+                jvmArgs = ["-DapiToken=" + apiToken]
+                jvmArgs = ["-Dbrowser=" + browser]
+            }
+        } catch (Exception e) {
+            println("unable to execute task, see the next detail: " + e)
+        }
+    }
+}
