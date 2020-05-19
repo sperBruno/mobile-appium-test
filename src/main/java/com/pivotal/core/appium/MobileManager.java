@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class MobileManager {
     private static final Logger LOGGER = Logger.getLogger(MobileManager.class.getSimpleName());
@@ -40,7 +41,8 @@ public class MobileManager {
         LOGGER.info(capabilities.getCapabilityNames());
         try {
             driver = new AndroidDriver<>(new URL(PropertiesInfo.getInstance().getAppiumServer()), capabilities);
-            wait = new WebDriverWait(driver, 30);
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            wait = new WebDriverWait(driver, 15);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

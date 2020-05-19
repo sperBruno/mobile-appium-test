@@ -20,8 +20,7 @@ public class PreferencesPage extends ApiDemos {
         switch (option.toLowerCase()) {
             case "preference dependencies":
                 // xpath: //tagname[@attribute='value']
-                AndroidElement preferenceDependencies = driver.findElement(By.xpath(preferenceDependenciesLocator));
-                MobileCommonActions.clickElement(preferenceDependencies);
+//                preferenceDependenciesPage(preferenceDependenciesLocator);
                 break;
             case "launching preferences":
                 // xpath: //tagname[@attribute='value']
@@ -37,5 +36,11 @@ public class PreferencesPage extends ApiDemos {
 
         }
 
+    }
+
+    public PreferenceDependenciesPage preferenceDependenciesPage() {
+        AndroidElement preferenceDependencies = driver.findElement(By.xpath(preferenceDependenciesLocator));
+        MobileCommonActions.clickElement(preferenceDependencies);
+        return new PreferenceDependenciesPage();
     }
 }
